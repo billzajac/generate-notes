@@ -14,8 +14,8 @@ def create_midi(note, duration_ticks, filename):
     track = MidiTrack()
     midi.tracks.append(track)
 
-    # Add program change to use the Classical Acoustic Guitar sound (program 24 in GM)
-    # 56 is trumpet
+    # Classical Acoustic Guitar sound (program 24 in GM)
+    # Add program change to use the trumpet sound (program 56 in GM)
     track.append(Message('program_change', program=56, time=0))
 
     # Add note-on and note-off messages
@@ -25,8 +25,8 @@ def create_midi(note, duration_ticks, filename):
     # Save MIDI file
     midi.save(filename)
 
-# Convert MIDI to MP3 using FluidSynth
-def midi_to_mp3(midi_file, mp3_file, soundfont_path):
+# Convert MIDI to MP3 using FluidSynth and amplify the audio
+def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=12):
     # Use FluidSynth to render the MIDI file to a WAV
     wav_file = mp3_file.replace(".mp3", ".wav")
     subprocess.run([
@@ -39,7 +39,12 @@ def midi_to_mp3(midi_file, mp3_file, soundfont_path):
 
     # Convert WAV to MP3 and trim to 100ms
     audio = AudioSegment.from_file(wav_file)
-    trimmed_audio = audio[:100]  # Trim to 100ms
+
+    # Amplify the audio
+    amplified_audio = audio + amplification_db  # Increase volume by specified dB
+    trimmed_audio = amplified_audio[:100]  # Trim to 100ms
+
+    # Export amplified and trimmed audio to MP3
     trimmed_audio.export(mp3_file, format="mp3")
     os.remove(wav_file)  # Clean up the intermediate WAV file
 
