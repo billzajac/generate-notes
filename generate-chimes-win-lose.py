@@ -25,7 +25,7 @@ def create_midi_sequence(notes, durations, filename, program=56):
     midi.save(filename)
 
 # Convert MIDI to MP3 using FluidSynth
-def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=5):
+def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
     # Render the MIDI file to a WAV file
     wav_file = mp3_file.replace(".mp3", ".wav")
     subprocess.run([
@@ -86,7 +86,7 @@ def create_chimes(soundfont_path):
     print(f"Ta-da great chime created: {tada_great_mp3}")
 
     # Too-bad chime: two long notes (high to low)
-    too_bad_notes = [67, 48]  # C5 to C3
+    too_bad_notes = [64, 48]  # C5 to C3
     too_bad_duration_ms = [300, 800]  # First note 800ms, second note 1200ms
     too_bad_durations = [int((dur / 1000) * ticks_per_beat * (bpm / 60)) for dur in too_bad_duration_ms]
     too_bad_midi = os.path.join(OUTPUT_FOLDER, "too_bad_chime.mid")

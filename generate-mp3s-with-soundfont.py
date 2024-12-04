@@ -26,7 +26,7 @@ def create_midi(note, duration_ticks, filename):
     midi.save(filename)
 
 # Convert MIDI to MP3 using FluidSynth and amplify the audio
-def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=12):
+def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
     # Use FluidSynth to render the MIDI file to a WAV
     wav_file = mp3_file.replace(".mp3", ".wav")
     subprocess.run([
