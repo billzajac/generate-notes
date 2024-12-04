@@ -1,5 +1,5 @@
 import os
-from mido import Message, MidiFile, MidiTrack
+from mido import Message, MidiFile, MidiTrack, MetaMessage, bpm2tempo
 
 # Define the starting note and the intervals for the C major scale
 starting_note = 60  # C4 in MIDI notation
@@ -11,13 +11,17 @@ for _ in range(14):  # Generate the next 14 notes
     next_note = ascending_notes[-1] + scale_intervals[(len(ascending_notes) - 1) % len(scale_intervals)]
     ascending_notes.append(next_note)
 
+NOTE_TICKS = 96  # 100ms at 120 BPM (480 ticks per beat)
 # Duration of each note in ticks (assuming 480 ticks per beat, 100ms ~= 1/10th of a beat at 120 BPM)
-NOTE_TICKS = 480 // 10
+# NOTE_TICKS = 480 // 10
 
 # Create a new MIDI file and track
 midi_file = MidiFile()
 track = MidiTrack()
 midi_file.tracks.append(track)
+
+# Add a tempo message (120 BPM)
+track.append(MetaMessage('set_tempo', tempo=bpm2tempo(120)))
 
 # Add the notes to the track
 for note in ascending_notes:

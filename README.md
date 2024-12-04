@@ -35,6 +35,9 @@ uv add pygame
 uv run generate-mp3s.py
 
 uv run generate-midi.py
-uv run play-midi-pygame.py
+uv run verify-midi-duration.py
 uv run play-midi-garage-band.py
+
+# Or
+uv run play-midi-pygame.py
 ```
