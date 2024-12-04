@@ -5,7 +5,7 @@ import subprocess
 from pydub import AudioSegment
 
 # Ensure output folder exists
-OUTPUT_FOLDER = "guitar_notes"
+OUTPUT_FOLDER = "mp3_notes"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Generate a MIDI file with a single note
@@ -15,6 +15,7 @@ def create_midi(note, duration_ticks, filename):
     midi.tracks.append(track)
 
     # Add program change to use the Classical Acoustic Guitar sound (program 24 in GM)
+    # 56 is trumpet
     track.append(Message('program_change', program=56, time=0))
 
     # Add note-on and note-off messages
@@ -43,7 +44,7 @@ def midi_to_mp3(midi_file, mp3_file, soundfont_path):
     os.remove(wav_file)  # Clean up the intermediate WAV file
 
 # Generate notes and save as MP3
-def generate_guitar_notes(soundfont_path):
+def generate_notes(soundfont_path):
     # Define note parameters
     duration_ms = 100
     ticks_per_beat = 480
@@ -63,12 +64,12 @@ def generate_guitar_notes(soundfont_path):
         midi_to_mp3(midi_file, mp3_file, soundfont_path)
         os.remove(midi_file)  # Clean up the intermediate MIDI file
 
-    print("Guitar notes generation complete!")
+    print("Notes generation complete!")
 
 if __name__ == "__main__":
     # Check for command-line arguments
     if len(sys.argv) < 2:
-        print("Usage: python generate_guitar_notes.py <path_to_soundfont.sf2>")
+        print("Usage: python generate_notes.py <path_to_soundfont.sf2>")
         sys.exit(1)
 
     # Get the SoundFont file path
@@ -79,5 +80,5 @@ if __name__ == "__main__":
         print(f"Error: SoundFont file '{soundfont_path}' not found.")
         sys.exit(1)
 
-    # Generate guitar notes
-    generate_guitar_notes(soundfont_path)
+    # Generate notes
+    generate_notes(soundfont_path)
