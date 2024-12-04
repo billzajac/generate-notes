@@ -63,9 +63,31 @@ def create_chimes(soundfont_path):
     os.remove(celebratory_midi)
     print(f"Celebratory chime created: {celebratory_mp3}")
 
+    # Ta-da good chime: two long notes (mid to mid)
+    tada_good_notes = [72, 72]  # C5 to C3
+    tada_good_duration_ms = [300, 800]  # First note 800ms, second note 1200ms
+    tada_good_durations = [int((dur / 1000) * ticks_per_beat * (bpm / 60)) for dur in tada_good_duration_ms]
+    tada_good_midi = os.path.join(OUTPUT_FOLDER, "tada_good_chime.mid")
+    tada_good_mp3 = os.path.join(OUTPUT_FOLDER, "tada_good_chime.mp3")
+    create_midi_sequence(tada_good_notes, tada_good_durations, tada_good_midi)
+    midi_to_mp3(tada_good_midi, tada_good_mp3, soundfont_path)
+    os.remove(tada_good_midi)
+    print(f"Ta-da good chime created: {tada_good_mp3}")
+
+    # Ta-da great chime: two long notes (mid to mid)
+    tada_great_notes = [79, 84]  # C5 to C3
+    tada_great_duration_ms = [300, 800]  # First note 800ms, second note 1200ms
+    tada_great_durations = [int((dur / 1000) * ticks_per_beat * (bpm / 60)) for dur in tada_great_duration_ms]
+    tada_great_midi = os.path.join(OUTPUT_FOLDER, "tada_great_chime.mid")
+    tada_great_mp3 = os.path.join(OUTPUT_FOLDER, "tada_great_chime.mp3")
+    create_midi_sequence(tada_great_notes, tada_great_durations, tada_great_midi)
+    midi_to_mp3(tada_great_midi, tada_great_mp3, soundfont_path)
+    os.remove(tada_great_midi)
+    print(f"Ta-da great chime created: {tada_great_mp3}")
+
     # Too-bad chime: two long notes (high to low)
     too_bad_notes = [67, 48]  # C5 to C3
-    too_bad_duration_ms = [400, 800]  # First note 800ms, second note 1200ms
+    too_bad_duration_ms = [300, 800]  # First note 800ms, second note 1200ms
     too_bad_durations = [int((dur / 1000) * ticks_per_beat * (bpm / 60)) for dur in too_bad_duration_ms]
     too_bad_midi = os.path.join(OUTPUT_FOLDER, "too_bad_chime.mid")
     too_bad_mp3 = os.path.join(OUTPUT_FOLDER, "too_bad_chime.mp3")
