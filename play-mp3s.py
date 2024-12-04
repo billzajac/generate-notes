@@ -25,7 +25,7 @@ def play_files_in_folder(folder_path):
 
         # Wait for the playback to finish
         while pygame.mixer.music.get_busy():
-            time.sleep(0.5)
+            time.sleep(0.1)
 
     print("All files played.")
     pygame.mixer.quit()

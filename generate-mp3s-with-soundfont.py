@@ -15,7 +15,7 @@ def create_midi(note, duration_ticks, filename):
     midi.tracks.append(track)
 
     # Add program change to use the Classical Acoustic Guitar sound (program 24 in GM)
-    track.append(Message('program_change', program=24, time=0))
+    track.append(Message('program_change', program=56, time=0))
 
     # Add note-on and note-off messages
     track.append(Message('note_on', note=note, velocity=64, time=0))
@@ -36,9 +36,10 @@ def midi_to_mp3(midi_file, mp3_file, soundfont_path):
         "-r", "44100"
     ])
 
-    # Convert WAV to MP3
+    # Convert WAV to MP3 and trim to 100ms
     audio = AudioSegment.from_file(wav_file)
-    audio.export(mp3_file, format="mp3")
+    trimmed_audio = audio[:100]  # Trim to 100ms
+    trimmed_audio.export(mp3_file, format="mp3")
     os.remove(wav_file)  # Clean up the intermediate WAV file
 
 # Generate notes and save as MP3

@@ -12,6 +12,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ```
 brew install ffmpeg 
+brew install fluid-synth
 uv init generate-notes
 
 # for generating MP3 files
@@ -19,6 +20,9 @@ uv add pydub
 
 # for generating MIDI
 uv add mido
+
+# To just directly generate using the soundfont desired
+uv add pyfluidsynth
 
 # For MIDI playback (through MIDI controller / Garage Band)
 uv add python-rtmidi
@@ -66,4 +70,23 @@ uv run chop-wav-to-mp3.py generated-midi/15_notes_c_major_classical_acoustic_gui
 
 ```
 uv run play-mp3s.py generated-midi/chopped_segments
+```
+
+## Use fluidsynth and soundfonts
+
+* List instruments in a soundfont file
+
+```
+fluidsynth -ni SOUNDFONT.sf2
+```
+
+## Fully automated
+
+* Download GeneralUser GS from: https://schristiancollins.com/generaluser.php
+* Choose an instrument (look at the documentation to find the id)
+* Set the id in: generate-mp3s-with-soundfont.py
+
+```
+uv run generate-mp3s-with-soundfont.py ../soundfonts/GeneralUser-GS/GeneralUser-GS.sf2
+uv run play-mp3s.py guitar_notes
 ```
