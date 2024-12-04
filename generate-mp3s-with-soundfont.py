@@ -69,6 +69,16 @@ def generate_notes(soundfont_path):
         midi_to_mp3(midi_file, mp3_file, soundfont_path)
         os.remove(midi_file)  # Clean up the intermediate MIDI file
 
+    # Generate dissonant flat note
+    dissonant_note = starting_note - 2  # Example: B flat if starting_note is C4
+    dissonant_midi_file = os.path.join(OUTPUT_FOLDER, "note_flat.mid")
+    dissonant_mp3_file = os.path.join(OUTPUT_FOLDER, "note_flat.mp3")
+
+    print(f"Generating Dissonant Flat Note: MIDI={dissonant_midi_file}, MP3={dissonant_mp3_file}")
+    create_midi(dissonant_note, duration_ticks, dissonant_midi_file)
+    midi_to_mp3(dissonant_midi_file, dissonant_mp3_file, soundfont_path)
+    os.remove(dissonant_midi_file)  # Clean up the intermediate MIDI file
+
     print("Notes generation complete!")
 
 if __name__ == "__main__":
