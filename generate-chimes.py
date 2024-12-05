@@ -4,7 +4,7 @@ import subprocess
 from pydub import AudioSegment
 
 # Output folder for generated chimes
-OUTPUT_FOLDER = "chimes"
+OUTPUT_FOLDER = "generated/chimes"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Generate a MIDI file with a sequence of notes

@@ -5,7 +5,7 @@ import subprocess
 from pydub import AudioSegment
 
 # Ensure output folder exists
-OUTPUT_FOLDER = "mp3_notes"
+OUTPUT_FOLDER = "generated/notes"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Generate a MIDI file with a single note
