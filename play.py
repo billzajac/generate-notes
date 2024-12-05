@@ -1,48 +1,43 @@
 import os
 import sys
 import time
-import pygame
+from pydub import AudioSegment
+from pydub.playback import play
 
-def play_files_in_folder(folder_path):
-    # Initialize the pygame mixer
-    pygame.init()
-    pygame.mixer.init()
-
-    # Get a list of MP3 files in the folder
-    files = [f for f in os.listdir(folder_path) if f.endswith(".mp3")]
-    if not files:
-        print(f"No MP3 files found in folder: {folder_path}")
+def play_audio_files_in_directory(directory):
+    # Check if directory exists
+    if not os.path.isdir(directory):
+        print(f"Error: Directory '{directory}' not found.")
         sys.exit(1)
 
-    # Play each file
-    for file_name in sorted(files):  # Sort for sequential playback
-        file_path = os.path.join(folder_path, file_name)
-        print(f"Now playing: {file_name}")
+    # Get a list of all .wav and .mp3 files in the directory
+    audio_files = [f for f in os.listdir(directory) if f.endswith(('.wav', '.mp3'))]
+    if not audio_files:
+        print(f"No .wav or .mp3 files found in directory '{directory}'.")
+        return
 
-        # Load and play the file
-        pygame.mixer.music.load(file_path)
-        pygame.mixer.music.play()
+    # Play each file in order
+    for audio_file in sorted(audio_files):
+        file_path = os.path.join(directory, audio_file)
+        print(f"Now playing: {audio_file}")
 
-        # Wait for the playback to finish
-        while pygame.mixer.music.get_busy():
-            time.sleep(0.1)
+        # Load the audio file
+        try:
+            audio = AudioSegment.from_file(file_path)
+            play(audio)  # Play the audio
+        except Exception as e:
+            print(f"Could not play '{audio_file}': {e}")
 
-    print("All files played.")
-    pygame.mixer.quit()
+    print("All audio files played.")
 
 if __name__ == "__main__":
     # Check for command-line arguments
     if len(sys.argv) < 2:
-        print("Usage: python play_mp3_files.py <folder_path>")
+        print("Usage: python play_audio_files.py <directory_path>")
         sys.exit(1)
 
-    # Get the folder path from arguments
-    folder_path = sys.argv[1]
+    # Get the directory from the command-line argument
+    directory_path = sys.argv[1]
 
-    # Check if the folder exists
-    if not os.path.isdir(folder_path):
-        print(f"Error: Folder '{folder_path}' not found.")
-        sys.exit(1)
-
-    # Play the files in the folder
-    play_files_in_folder(folder_path)
+    # Play the audio files in the directory
+    play_audio_files_in_directory(directory_path)
