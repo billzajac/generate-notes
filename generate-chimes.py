@@ -8,7 +8,8 @@ OUTPUT_FOLDER = "generated/chimes"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # Generate a MIDI file with a sequence of notes
-def create_midi_sequence(notes, durations, filename, program=56):
+# 46, 61
+def create_midi_sequence(notes, durations, filename, program=46):
     midi = MidiFile()
     track = MidiTrack()
     midi.tracks.append(track)
@@ -25,11 +26,12 @@ def create_midi_sequence(notes, durations, filename, program=56):
     midi.save(filename)
 
 # Convert MIDI to MP3 using FluidSynth
-def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
+def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=0):
     # Render the MIDI file to a WAV file
     wav_file = mp3_file.replace(".mp3", ".wav")
     subprocess.run([
         "fluidsynth",
+        "-g", "2.0", # Increase gain (maix is 2.0)
         "-ni", soundfont_path,
         midi_file,
         "-F", wav_file,
@@ -38,7 +40,8 @@ def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
 
     # Load and amplify the audio
     audio = AudioSegment.from_file(wav_file)
-    amplified_audio = audio + amplification_db  # Amplify the sound
+    normalized_audio = audio.normalize()  # Normalize to avoid clipping
+    amplified_audio = normalized_audio + amplification_db  # Amplify the sound
     trimmed_audio = amplified_audio[:1500]  # Trim to 100ms
     trimmed_audio.export(mp3_file, format="mp3")
 

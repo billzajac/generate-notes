@@ -14,9 +14,16 @@ def create_midi(note, duration_ticks, filename):
     track = MidiTrack()
     midi.tracks.append(track)
 
-    # Classical Acoustic Guitar sound (program 24 in GM)
-    # Add program change to use the trumpet sound (program 56 in GM)
-    track.append(Message('program_change', program=56, time=0))
+    # Classical Acoustic Guitar - program 24
+    # Trumpet - program 56
+    # Celesta - program 8
+    # Music Box - program 10
+    # Glockenspiel - program 9
+    # Vibraphone - program 11
+    # Tinkle Bell - program 112
+    # Harp - program 46
+
+    track.append(Message('program_change', program=10, time=0))
 
     # Add note-on and note-off messages
     track.append(Message('note_on', note=note, velocity=64, time=0))
@@ -26,11 +33,12 @@ def create_midi(note, duration_ticks, filename):
     midi.save(filename)
 
 # Convert MIDI to MP3 using FluidSynth and amplify the audio
-def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
+def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=0):
     # Use FluidSynth to render the MIDI file to a WAV
     wav_file = mp3_file.replace(".mp3", ".wav")
     subprocess.run([
         "fluidsynth",
+        "-g", "2.0", # Increase gain (maix is 2.0)
         "-ni", soundfont_path,
         midi_file,
         "-F", wav_file,
@@ -39,10 +47,11 @@ def midi_to_mp3(midi_file, mp3_file, soundfont_path, amplification_db=35):
 
     # Convert WAV to MP3 and trim to 100ms
     audio = AudioSegment.from_file(wav_file)
+    normalized_audio = audio.normalize()  # Normalize to avoid clipping
 
     # Amplify the audio
-    amplified_audio = audio + amplification_db  # Increase volume by specified dB
-    trimmed_audio = amplified_audio[:100]  # Trim to 100ms
+    amplified_audio = normalized_audio + amplification_db  # Increase volume by specified dB
+    trimmed_audio = amplified_audio[:600]  # Trim to 100ms
 
     # Export amplified and trimmed audio to MP3
     trimmed_audio.export(mp3_file, format="mp3")

@@ -87,6 +87,9 @@ fluidsynth -ni SOUNDFONT.sf2
 * Set the id in: generate-mp3s-with-soundfont.py
 
 ```
-uv run generate-mp3s-with-soundfont.py ../soundfonts/GeneralUser-GS/GeneralUser-GS.sf2
-uv run play-mp3s.py guitar_notes
+uv run generate-notes.py ../soundfonts/GeneralUser-GS/GeneralUser-GS.sf2
+uv run play.py generated/notes
+
+uv run generate-chimes.py ../soundfonts/GeneralUser-GS/GeneralUser-GS.sf2
+uv run play.py generated/chimes
 ```
