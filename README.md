@@ -93,3 +93,13 @@ uv run play.py generated/notes
 uv run generate-chimes.py ../soundfonts/GeneralUser-GS/GeneralUser-GS.sf2
 uv run play.py generated/chimes
 ```
+
+## Playing
+
+* Use mpv (brew install mpv)
+
+```
+mpv *.wav
+
+mpv --loop=inf shepard_tone.wav
+```
